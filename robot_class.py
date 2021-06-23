@@ -91,6 +91,22 @@ class robot:
         ##    as list.append([index, dx, dy]), this format is important for data creation done later
         
         ## TODO: return the final, complete list of measurements
+        
+        # Loop through each landmark
+        for index in range(self.num_landmarks):
+            
+            # 1) Compute values of dx and dy relative to each landmark
+            dx = self.landmarks[index][0] - self.x
+            dy = self.landmarks[index][1] - self.y
+            
+            # 2) Account for measurement noise by *adding* a noise component to dx and dy
+            dx += self.rand() * self.measurement_noise
+            dy += self.rand() * self.measurement_noise
+        
+            # 3) Check whether measurements fall outside of measurement range
+            if (dx <= self.measurement_range) or (dy <= self.measurement_range):
+                measurements.append([index, dx, dy])
+        
         return measurements
 
 
